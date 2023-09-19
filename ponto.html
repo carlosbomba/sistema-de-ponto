@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Command Sender</title>
+</head>
+<body>
+    <form id="command-form">
+        <label for="command">Enter a command:</label>
+        <input type="text" id="command" name="command">
+        <button type="submit">Submit</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        const serverURL = 'http://127.0.0.1:5001';
+        document.getElementById('command-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const command = document.getElementById('command').value;
+            fetch('${serverURL}/run-query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ command: command })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').textContent = data.message;
+            });
+        });
+    </script>
+</body>
+</html>
