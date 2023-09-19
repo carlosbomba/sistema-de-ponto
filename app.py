@@ -23,17 +23,15 @@ def ponto_adicao():
 
 @app.route("/busca-ponto", methods=["POST"])
 def busca_ponto():
-    matricula = request.json.get('matricula')
+    usuario = request.json.get('matricula')
     month = request.json.get('mes')
     with SqlAlchemyDbEngine() as session:
         tabela_ponto = PointTable
         stmt = (
             select(tabela_ponto.matricula, tabela_ponto.data_ponto, tabela_ponto.hora_ponto, extract("month", tabela_ponto.data_ponto).alias('mes'))
-                .where(mes = month)
+                .where(matricula = usuario, mes = month)
         )
-        stmt_comp = stmt.compile(compile_kwargs={"literal_binds": True})
         results = session.execute(stmt).all()
-
     return results
 
 
