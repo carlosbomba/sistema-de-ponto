@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from datetime import datetime, timezone
 from sqlalchemy_engine import SqlAlchemyDbEngine
+from sqlalchemy import select, extract
 from point_table import PointTable
 
 app = Flask(__name__)
@@ -22,9 +23,18 @@ def ponto_adicao():
 
 @app.route("/busca-ponto", methods=["POST"])
 def busca_ponto():
-    tempo = datetime.now()
-    command = request.json.get('command')
-    return str(tempo)
+    matricula = request.json.get('matricula')
+    month = request.json.get('mes')
+    with SqlAlchemyDbEngine() as session:
+        tabela_ponto = PointTable
+        stmt = (
+            select(tabela_ponto.matricula, tabela_ponto.data_ponto, tabela_ponto.hora_ponto, extract("month", tabela_ponto.data_ponto).alias('mes'))
+                .where(mes = month)
+        )
+        stmt_comp = stmt.compile(compile_kwargs={"literal_binds": True})
+        results = session.execute(stmt).all()
+
+    return results
 
 
 if __name__ == "__main__":
