@@ -10,7 +10,14 @@ def ponto_adicao():
     tempo = datetime.now()
     usuario = request.json.get('usuario')
     with SqlAlchemyDbEngine() as session:
-        tabela_ponto = PointTable
+        new_record = PointTable(
+            cnpj_empresa=00000.000,
+            matricula=usuario,
+            data_ponto=tempo.strftime('%Y-%M-%D'),
+            hora_ponto=tempo.strftime('%H:%M:%S')
+            )
+        session.add(new_record)
+        session.commit()
     return "Ponto cadastrado com sucesso!"
 
 @app.route("/busca-ponto", methods=["POST"])
