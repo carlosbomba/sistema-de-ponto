@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from datetime import datetime, timezone
 from sqlalchemy_engine import SqlAlchemyDbEngine
+from point_table import PointTable
 
 app = Flask(__name__)
 

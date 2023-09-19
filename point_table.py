@@ -5,7 +5,7 @@ import datetime
 
 Base = declarative_base()
 
-class DagRun(Base):
+class PointTable(Base):
     #descrevendo o que temos no banco de dados
     __tablename__ = "dag_run"
 
