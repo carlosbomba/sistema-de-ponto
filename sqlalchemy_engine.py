@@ -1,20 +1,9 @@
-# -*- coding: utf-8 -*-
-"""
-Engine Handler
-"""
-import json
-import logging
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 class SqlAlchemyDbEngine:
-    """Sql Alchemy Database Engine Handler"""
-
     def __init__(self):
-        """
-        Initializes a SQL Alchemy based Engine Handler.
-        """
         self.alchemy_engine_url = os.getenv("ALCHEMY_ENGINE_URL")
         self.engine = self.__create_engine()
         self.session = None
